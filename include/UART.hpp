@@ -19,15 +19,30 @@ TODO: Add option to change buad rate
 // Class for the UART driver
 class UART 
 {
+    
     public:
         UART();               
-        void Tx0(char *data, const unsigned char size);    // Transmit for UART0    
-        void Rx0(char *data, const unsigned char size);    // Receive for UART0
+        void Tx0(char *data, const unsigned char size);         // Transmit for UART0
+        void Rx0(char *data, volatile unsigned char index);     // Receive for UART0 
+        void Tx1(char *data, const unsigned char size);         // Transmit for UART1
+        void Rx1(char *data, volatile unsigned char index);     // Receive for UART1
 
-        void Tx1(char *data, const unsigned char size);    // Transmit for UART1
-        void Rx1(char *data, const unsigned char size);    // Receive for UART1
+        void enable_RxISR()
+        {
+            // Enable receive interrupt
+            UCA0IE |= UCRXIE;
+        }
+
+        void disable_RxISR()
+        {
+            UCA0IE &= ~UCRXIE;
+        }
+        
+                                       
     private:
         void UART0_Init();                  // Initialize UART0
         void UART1_Init();                  // Initialize UART1
 };
 #endif
+
+

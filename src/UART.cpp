@@ -76,16 +76,12 @@ void UART::Tx0(char *data, const unsigned char size)
     while(UCA0STAT & UCBUSY);
 }
 
-// Receive subroutine
-void UART::Rx0(char *data, const unsigned char size)
+//Receive subroutine
+void UART::Rx0(char *data, volatile unsigned char index)
 {
-    volatile char i;
-    // Iterate over the number of bytes to receive
-    for(i = 0; i < size; i++) {
-        while(UCA0STAT & UCBUSY);       // Wait for Rx0 buffer
-        data[i] = UCA0RXBUF;            // Move byte in receive buffer into data[i]
-    }
+    data[index] = UCA0RXBUF;            // Store incoming byte in the ith location in data
 }
+
 //****************************************************************************************
 
 //***************************************UART1(RX, TX)************************************
@@ -105,14 +101,13 @@ void UART::Tx1(char *data, const unsigned char size)
     while(UCA1STAT & UCBUSY);
 }
 
+
 // Receive subroutine
-void UART::Rx1(char *data, const unsigned char size)
+void UART::Rx1(char *data, const unsigned char index)
 {
-    volatile char i;
-    // Iterate over the number of bytes
-    for(i = 0; i < size; i++) {
-        while(UCA1STAT & UCBUSY);       // Wait for Rx0 buffer
-        data[i] = UCA1RXBUF;            // Store incoming byte in the ith location in data
-    }
+    data[index] = UCA1RXBUF;            // Store incoming byte in the ith location in data
 }
+
+
+
 
